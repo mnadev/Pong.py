@@ -2,32 +2,49 @@ import pygame
 from random import randint
 
 pygame.init()
+
 screen = pygame.display.set_mode((700,700))
+
+pygame.display.set_caption('Pong')
+
 done = False
 
-x = 0
-y = 0
-changeX = 10
-changeY = 10
+
+
+ballX = 350
+ballY = 250
+xSpeed = 5
+ySpeed = 5
+
 while not done:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             done = True
 
-        if x >= 600:
-            changeX = -1 *randint(0,20)
-        else:
-            changeX = randint(0,20)
+    enemyX = 50
+    paddleX, paddleY = pygame.mouse.get_pos()
 
-        x += changeX
+    if ballX >= 680:
+        xSpeed = -1 * xSpeed
 
-        if y >= 600:
-            changeY = -1 * randint(0,20)
-        else:
-            changeY = randint(0,20)
+    if ballY >= 680:
+        ySpeed = -1 * ySpeed
 
-        y += changeY
+    if ballX <=  20:
+        xSpeed = -1 * xSpeed
 
-    pygame.draw.rect(screen, (0,x%255,y%255), pygame.Rect(x,y,60,60))
+    if ballY <=  20:
+        ySpeed = -1 * ySpeed
+
+    ballX += xSpeed
+    ballY += ySpeed
+
+    screen.fill((0,0,0))
+
+    pygame.draw.rect( screen, (0,125,225), pygame.Rect(paddleX,650,60,30) )
+    pygame.draw.circle(screen, (0, 125, 225), (ballX,ballY), 20)
+
+    pygame.draw.rect(screen, (0, 125, 225), pygame.Rect(enemyX, 40, 60, 30))
+
     pygame.display.flip()
 
